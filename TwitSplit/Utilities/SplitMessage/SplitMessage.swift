@@ -32,8 +32,12 @@ struct SplitMessage {
         var appendString = ""
         var counterPart = 1
         var prefixString = "\(counterPart)/\(parts)"
-        let prefixCount = prefixString.count + 1// 1: is white space bettwen string of part vs index of part
+        
+        //prefixCount: 1 is white space bettwen string of part vs index of part
+        let prefixCount = prefixString.count + 1
+        
         let whiteSpaceCount = countListWord - 1
+        
         if (prefixCount * parts + whiteSpaceCount) >= MAXIMUM_CHARACTER_ALLOWED {
             let plusPartCount = prefixCount * parts + whiteSpaceCount - MAXIMUM_CHARACTER_ALLOWED
             parts += lround(Double(plusPartCount)/Double(MAXIMUM_CHARACTER_ALLOWED))
@@ -45,7 +49,7 @@ struct SplitMessage {
         for (idx, word) in listWordInput.enumerated() {
             let allowCharacter = MAXIMUM_CHARACTER_ALLOWED - prefixCount
             let predictString = appendString + " \(word)"
-            if appendString.count >= allowCharacter || predictString.count >= MAXIMUM_CHARACTER_ALLOWED{
+            if appendString.count >= allowCharacter || predictString.count >= MAXIMUM_CHARACTER_ALLOWED || (idx == countListWord - 1) {
                 counterPart += 1
                 //update prefix string
                 prefixString = "\(counterPart)/\(parts)"
@@ -58,10 +62,6 @@ struct SplitMessage {
                 appendString = prefixString + " \(word)"
             } else {
                 appendString = predictString
-            }
-            if idx == countListWord - 1 {
-                //end of the list
-                result.append(appendString)
             }
         }
         return result
