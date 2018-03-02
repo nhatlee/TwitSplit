@@ -21,38 +21,31 @@ struct SplitMessage {
         if countCharacter <= MAXIMUM_CHARACTER_ALLOWED {
             return [message]
         }
-        var parts = Int(ceil(Double(countCharacter)/Double(MAXIMUM_CHARACTER_ALLOWED)))
+        
         let listWordInput = message.components(separatedBy: .whitespacesAndNewlines)
         let countListWord = listWordInput.count
-        if countListWord < parts {
+        
+        var partsInfo = getPartInfoOfSplit(countCharacter, countListWord - 1)
+        
+        if countListWord < partsInfo.part {
             throw InputError.inputWrong("Error: Your input message have more than 50 charactes and not contain white spaces")
         }
         var result = [String]()
         
         var appendString = ""
         var counterPart = 1
-        var prefixString = "\(counterPart)/\(parts)"
+        var prefixString = partsInfo.prefixString
         
-        //prefixCount: 1 is white space bettwen string of part vs index of part
-        let prefixCount = prefixString.count + 1
-        
-        let whiteSpaceCount = countListWord - 1
-        
-        if (prefixCount * parts + whiteSpaceCount) >= MAXIMUM_CHARACTER_ALLOWED {
-            let plusPartCount = prefixCount * parts + whiteSpaceCount - MAXIMUM_CHARACTER_ALLOWED
-            parts += lround(Double(plusPartCount)/Double(MAXIMUM_CHARACTER_ALLOWED))
-            prefixString = "\(counterPart)/\(parts)"
-        }
         defer {
             assert(!(appendString.count > MAXIMUM_CHARACTER_ALLOWED), "Split message wrong")
         }
         for (idx, word) in listWordInput.enumerated() {
-            let allowCharacter = MAXIMUM_CHARACTER_ALLOWED - prefixCount
+            let allowCharacter = MAXIMUM_CHARACTER_ALLOWED - (prefixString.count + 1)
             let predictString = appendString + " \(word)"
-            if appendString.count >= allowCharacter || predictString.count >= MAXIMUM_CHARACTER_ALLOWED || (idx == countListWord - 1) {
+            if appendString.count >= allowCharacter || predictString.count >= MAXIMUM_CHARACTER_ALLOWED {
                 counterPart += 1
                 //update prefix string
-                prefixString = "\(counterPart)/\(parts)"
+                prefixString = "\(counterPart)/\(partsInfo.part)"
                 result.append(appendString)
                 //reset appendString
                 appendString = ""
@@ -63,7 +56,25 @@ struct SplitMessage {
             } else {
                 appendString = predictString
             }
+            
+            if idx == countListWord - 1 {
+                //if end of the list while character of appendString still < MAXIMUM_CHARACTER_ALLOWED then we still add to the list
+                result.append(appendString)
+            }
         }
         return result
+    }
+    
+    static func getPartInfoOfSplit(_ messageCount: Int, _ whiteSpaceCount:Int) -> (part: Int, prefixString: String){
+        var parts = Int(ceil(Double(messageCount)/Double(MAXIMUM_CHARACTER_ALLOWED)))
+        let counterPart = 1
+        var prefixString = "\(counterPart)/\(parts)"
+        let prefixCount = prefixString.count
+        if (prefixCount * parts + whiteSpaceCount) >= MAXIMUM_CHARACTER_ALLOWED {
+            let plusPartCount = prefixCount * parts + whiteSpaceCount - MAXIMUM_CHARACTER_ALLOWED
+            parts += lround(Double(plusPartCount)/Double(MAXIMUM_CHARACTER_ALLOWED))
+            prefixString = "\(counterPart)/\(parts)"
+        }
+        return (part: parts, prefixString: prefixString)
     }
 }
