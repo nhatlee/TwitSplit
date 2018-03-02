@@ -11,21 +11,8 @@ import MessageKit
 import RxSwift
 import RxCocoa
 
-enum ConversationCommand {
-    case initialData(messageList: [MessageModel])
-    case sendMessage(updatelist: [MessageModel])
-}
-
 final class ConversationViewModel: NSObject {
     var messageList: Variable<[MessageModel]>
-//    static func executeCommand(state: ConversationViewModel, command: ConversationCommand) -> ConversationViewModel{
-//        switch command {
-//        case .initialData(messageList):
-//            return ConversationViewModel(messagelist: messageList)
-//        case .sendMessage(updatelist)
-//            return ConversationViewModel(messagelist: updatelist)
-//        }
-//    }
     init(messagelist: Variable<[MessageModel]>) {
         self.messageList = messagelist
     }
