@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+//        try! SplitMessage.splitMessage("I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself.")
         return true
     }
 
