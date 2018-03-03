@@ -37,7 +37,6 @@ class TwitSplitTests: XCTestCase {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
-//            let inputStr = "I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself."
             let inputStr = """
 e. Messages will only be split on whitespace. If the message contains a span of non-whitespace characters longer than 50 characters, display an error.
             f. Split messages will have a "part indicator" appended to the beginning of each section. In the example above, the message was split into two chunks, so the part indicators read "1/2" and "2/2". Be aware that these count toward the character limit.
