@@ -13,20 +13,6 @@ enum InputError: Error {
     case inputWrong(String)
 }
 
-func findWhiteSpaceIndex(_ inputString: String, allowCharacterCount: Int) -> String.Index? {
-    if inputString.count <= allowCharacterCount { return nil}
-    var allowCharacter = allowCharacterCount
-    var stringAtIndex = "expexted a white space"
-    var index: String.Index!
-    repeat{
-        index = inputString.index(inputString.startIndex, offsetBy: allowCharacter)
-        stringAtIndex = String(inputString[index])
-        allowCharacter -= 1
-    } while (stringAtIndex != " " && allowCharacter > 0)
-    assert(stringAtIndex == " ", "wrong")
-    return index
-}
-
 struct SplitMessage {
     static func getPartInfoOfSplit(_ messageCount: Int, _ whiteSpaceCount:Int) -> (part: Int, prefixString: String){
         var parts = Int(ceil(Double(messageCount)/Double(MAXIMUM_CHARACTER_ALLOWED)))
@@ -40,6 +26,20 @@ struct SplitMessage {
         }
         return (part: parts, prefixString: prefixString)
     }
+    //for v2
+    static func findWhiteSpaceIndex(_ inputString: String, allowCharacterCount: Int) -> String.Index? {
+        if inputString.count <= allowCharacterCount { return nil}
+        var allowCharacter = allowCharacterCount
+        var stringAtIndex = "expexted a white space"
+        var index: String.Index!
+        repeat{
+            index = inputString.index(inputString.startIndex, offsetBy: allowCharacter)
+            stringAtIndex = String(inputString[index])
+            allowCharacter -= 1
+        } while (stringAtIndex != " " && allowCharacter > 0)
+        assert(stringAtIndex == " ", "wrong")
+        return index
+    }
 }
 
 extension SplitMessage {
@@ -52,7 +52,7 @@ extension SplitMessage {
         let listWordInput = message.components(separatedBy: .whitespacesAndNewlines)
         let countListWord = listWordInput.count
         
-        var partsInfo = getPartInfoOfSplit(countCharacter, countListWord - 1)
+        let partsInfo = getPartInfoOfSplit(countCharacter, countListWord - 1)
         
         if countListWord < partsInfo.part {
             throw InputError.inputWrong("Error: Your input message have more than 50 charactes and not contain white spaces")
