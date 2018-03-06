@@ -128,9 +128,7 @@ extension SplitMessage {
     }
     
     static func append(string: String, word: String, prefix: String, _ predicate:(String) -> Bool) -> String {
-        if predicate(string) {
-            return prefix + " \(word)"
-        }
-        return string + " \(word)"
+        func added(_ fist: String, _ second: String) -> String { return fist + " " + second }
+        return predicate(string) ? added(prefix, word) : added(string, word)
     }
 }
