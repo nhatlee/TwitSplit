@@ -110,27 +110,29 @@ extension SplitMessage {
         }
         for (idx, word) in listWordInput.enumerated() {
             let allowCharacter = MAXIMUM_CHARACTER_ALLOWED - (prefixString.count + 1)
-            let predictString = appendString + " \(word)"
-            if appendString.count >= allowCharacter || predictString.count >= MAXIMUM_CHARACTER_ALLOWED {
+            appendString = append(string: appendString, word: word, prefix: prefixString) { _ in appendString.count == 0 }
+            let isEnd = idx == (countListWord - 1)
+            if isReachLimit(appendString, allowCharacter) || isEnd {
+                result.append(appendString)
+                
                 counterPart += 1
                 //update prefix string
                 prefixString = "\(counterPart)/\(partsInfo.part)"
-                result.append(appendString)
                 //reset appendString
                 appendString = ""
             }
-            
-            if appendString.count == 0{
-                appendString = prefixString + " \(word)"
-            } else {
-                appendString = predictString
-            }
-            
-            if idx == countListWord - 1 {
-                //if end of the list while character of appendString still < MAXIMUM_CHARACTER_ALLOWED then we still add to the list
-                result.append(appendString)
-            }
         }
         return result
+    }
+    
+    static func isReachLimit(_ string: String, _ allowedNo: Int) -> Bool {
+        return string.count >= allowedNo
+    }
+    
+    static func append(string: String, word: String, prefix: String, _ predicate:(String) -> Bool) -> String {
+        if predicate(string) {
+            return prefix + " \(word)"
+        }
+        return string + " \(word)"
     }
 }

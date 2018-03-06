@@ -203,7 +203,7 @@ extension ConversationViewModel: MessageInputBarDelegate {
             
             if let text = component as? String {
                 do {
-                    let listSplitMessage = try SplitMessage.splitMessageV2(text)
+                    let listSplitMessage = try SplitMessage.splitMessage(text)
                     for messageString in listSplitMessage{
                         let attributedText = NSAttributedString(string: messageString, attributes: [.font: UIFont.systemFont(ofSize: 15), .foregroundColor: UIColor.blue])
 
