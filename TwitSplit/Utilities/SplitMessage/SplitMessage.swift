@@ -107,7 +107,12 @@ extension SplitMessage {
         
         for (idx, word) in listWordInput.enumerated() {
             let allowCharacter = MAXIMUM_CHARACTER_ALLOWED - (prefixString.count + 1)
-            appendString = append(string: appendString, word: word, prefix: prefixString) { _ in appendString.count == 0 }
+            //get appendString V1
+//            appendString = append(string: appendString, word: word, prefix: prefixString) { _ in appendString.count == 0 }
+            //get appendString V2
+            let fAppend = append(word: word, isAddPrefix: appendString.count == 0)
+            appendString = fAppend(appendString.count == 0 ? prefixString : appendString)
+            
             let isEnd = idx == (countListWord - 1)
             if isReachLimit(appendString, allowCharacter) || isEnd {
                 assert(!(appendString.count > MAXIMUM_CHARACTER_ALLOWED), "Split message wrong")
@@ -131,4 +136,15 @@ extension SplitMessage {
         func added(_ fist: String, _ second: String) -> String { return fist + " " + second }
         return predicate(string) ? added(prefix, word) : added(string, word)
     }
+    
+    static func append(word: String, isAddPrefix: Bool) -> (String) -> String {
+        func added(_ fist: String, _ second: String) -> String { return fist + " " + second }
+        
+        func addPrefix(_ prefix: String) -> String { return added(prefix, word) }
+        
+        func addWord(_ preword: String = "")->String { return added(preword, word)}
+        
+        return isAddPrefix ? addPrefix : addWord
+    }
+    
 }
