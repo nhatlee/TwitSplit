@@ -94,7 +94,7 @@ extension SplitMessage {
         let listWordInput = message.components(separatedBy: .whitespacesAndNewlines)
         let countListWord = listWordInput.count
         
-        var partsInfo = getPartInfoOfSplit(countCharacter, countListWord - 1)
+        let partsInfo = getPartInfoOfSplit(countCharacter, countListWord - 1)
         
         if countListWord < partsInfo.part {
             throw InputError.inputWrong("Error: Your input message have more than 50 charactes and not contain white spaces")
@@ -105,14 +105,12 @@ extension SplitMessage {
         var counterPart = 1
         var prefixString = partsInfo.prefixString
         
-        defer {
-            assert(!(appendString.count > MAXIMUM_CHARACTER_ALLOWED), "Split message wrong")
-        }
         for (idx, word) in listWordInput.enumerated() {
             let allowCharacter = MAXIMUM_CHARACTER_ALLOWED - (prefixString.count + 1)
             appendString = append(string: appendString, word: word, prefix: prefixString) { _ in appendString.count == 0 }
             let isEnd = idx == (countListWord - 1)
             if isReachLimit(appendString, allowCharacter) || isEnd {
+                assert(!(appendString.count > MAXIMUM_CHARACTER_ALLOWED), "Split message wrong")
                 result.append(appendString)
                 
                 counterPart += 1
