@@ -8,12 +8,13 @@
 
 import UIKit
 import MessageKit
+import RxSwift
+import RxCocoa
 
 final class ConversationViewModel: NSObject {
-    private var messageList: [MessageModel] = []
-    
-    init(_ messageList: [MessageModel]) {
-        self.messageList = messageList
+    var messageList: Variable<[MessageModel]>
+    init(messagelist: Variable<[MessageModel]>) {
+        self.messageList = messagelist
     }
 }
 
@@ -24,11 +25,11 @@ extension ConversationViewModel: MessagesDataSource {
     }
     
     func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
-        return messageList.count
+        return messageList.value.count
     }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
-        return messageList[indexPath.section]
+        return messageList.value[indexPath.section]
     }
     
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
@@ -76,8 +77,6 @@ extension ConversationViewModel:MessagesDisplayDelegate {
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
         return .bubbleTail(corner, .curved)
-        //        let configurationClosure = { (view: MessageContainerView) in}
-        //        return .custom(configurationClosure)
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
@@ -200,37 +199,33 @@ extension ConversationViewModel: MessageInputBarDelegate {
         // Each NSTextAttachment that contains an image will count as one empty character in the text: String
         
         for component in inputBar.inputTextView.components {
-            //TODO
+            //Just support send message now
             
-//            if let image = component as? UIImage {
-//
-//                let imageMessage = MessageModel(image: image, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-//                messageList.append(imageMessage)
-//                messagesCollectionView.insertSections([messageList.count - 1])
-//
-//            } else if let text = component as? String {
-//                do {
-//                    let listSplitMessage = try SplitMessage.splitMessage(text)
-//                    for messageString in listSplitMessage{
-//                        let attributedText = NSAttributedString(string: messageString, attributes: [.font: UIFont.systemFont(ofSize: 15), .foregroundColor: UIColor.blue])
-//
-//                        let messageObject = MessageModel(attributedText: attributedText, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-//                        messageList.append(messageObject)
-//                        messagesCollectionView.insertSections([messageList.count - 1])
-//                    }
-//                } catch InputError.inputWrong(let errString) {
-//                    Utilities.showMessageAt(self, title: "Error", message: errString, confirmTitle: "OK", cancelTitle: nil, callback: { (isConfirm) in
-//                        //
-//                    })
-//                }catch let error {
-//                    assertionFailure(error.localizedDescription)
-//                }
-//            }
+            if let text = component as? String {
+                do {
+                    let listSplitMessage = try SplitMessage.splitMessage(text)
+                    for messageString in listSplitMessage{
+                        let attributedText = NSAttributedString(string: messageString, attributes: [.font: UIFont.systemFont(ofSize: 15), .foregroundColor: UIColor.blue])
+
+                        let messageObject = MessageModel(attributedText: attributedText, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+                        messageList.value.append(messageObject)
+                    }
+                } catch InputError.inputWrong(let errString) {
+                    if let topVC = UIApplication.topViewController(){
+                        Utilities.showMessageAt(topVC, title: "Error", message: errString, confirmTitle: "OK", cancelTitle: nil, callback: { (isConfirm) in
+                            
+                        })
+                    } else {
+                        assertionFailure("Check top view controller")
+                    }
+                }catch let error {
+                    assertionFailure(error.localizedDescription)
+                }
+            }
             
         }
         
         inputBar.inputTextView.text = String()
-//        messagesCollectionView.scrollToBottom()
     }
     
 }

@@ -38,6 +38,9 @@
 		DDA01F132048E5C7003884E8 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01F122048E5C7003884E8 /* ConversationViewModel.swift */; };
 		DDA01F142048E5C7003884E8 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01F122048E5C7003884E8 /* ConversationViewModel.swift */; };
 		DDA01F152048E5C7003884E8 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01F122048E5C7003884E8 /* ConversationViewModel.swift */; };
+		DDA01F2B20491ACE003884E8 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01F2A20491ACE003884E8 /* UIApplication+Extensions.swift */; };
+		DDA01F2C20491ACE003884E8 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01F2A20491ACE003884E8 /* UIApplication+Extensions.swift */; };
+		DDA01F2D20491ACE003884E8 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01F2A20491ACE003884E8 /* UIApplication+Extensions.swift */; };
 		DDE3730020482C94005C2C89 /* ConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE372FF20482C94005C2C89 /* ConversationVC.swift */; };
 		DDE3730220482CFF005C2C89 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE3730120482CFF005C2C89 /* MessageModel.swift */; };
 		DDE3730320482CFF005C2C89 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE3730120482CFF005C2C89 /* MessageModel.swift */; };
@@ -89,6 +92,7 @@
 		DD5D1D85204837F1003E0C6C /* SplitMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitMessage.swift; sourceTree = "<group>"; };
 		DD5D1D89204837FE003E0C6C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		DDA01F122048E5C7003884E8 /* ConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModel.swift; sourceTree = "<group>"; };
+		DDA01F2A20491ACE003884E8 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		DDE372FF20482C94005C2C89 /* ConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationVC.swift; sourceTree = "<group>"; };
 		DDE3730120482CFF005C2C89 /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		DDE3730D204830B9005C2C89 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
@@ -282,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5D1D80204832F4003E0C6C /* UserDefault+Setting.swift */,
+				DDA01F2A20491ACE003884E8 /* UIApplication+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -480,10 +485,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TwitSplit/Pods-TwitSplit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -596,6 +605,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDA01F2B20491ACE003884E8 /* UIApplication+Extensions.swift in Sources */,
 				DD5D1D86204837F1003E0C6C /* SplitMessage.swift in Sources */,
 				DDE3730220482CFF005C2C89 /* MessageModel.swift in Sources */,
 				DD5D1D8A204837FE003E0C6C /* Utilities.swift in Sources */,
@@ -611,6 +621,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDA01F2C20491ACE003884E8 /* UIApplication+Extensions.swift in Sources */,
 				DD5D1D87204837F1003E0C6C /* SplitMessage.swift in Sources */,
 				DDE3730320482CFF005C2C89 /* MessageModel.swift in Sources */,
 				DD5D1D8B204837FE003E0C6C /* Utilities.swift in Sources */,
@@ -626,6 +637,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDA01F2D20491ACE003884E8 /* UIApplication+Extensions.swift in Sources */,
 				DD5D1D88204837F1003E0C6C /* SplitMessage.swift in Sources */,
 				DDE3730420482CFF005C2C89 /* MessageModel.swift in Sources */,
 				DD5D1D8C204837FE003E0C6C /* Utilities.swift in Sources */,

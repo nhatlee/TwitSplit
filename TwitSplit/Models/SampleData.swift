@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageKit
+import RxSwift
 
 final class SampleData {
     
@@ -127,10 +128,10 @@ final class SampleData {
         }
     }
     
-    func getMessages(count: Int, completion: ([MessageModel]) -> Void) {
-        var messages: [MessageModel] = []
+    func getMessages(count: Int, completion: (Variable<[MessageModel]>) -> Void) {
+        var messages = Variable<[MessageModel]>([])
         for _ in 0..<count {
-            messages.append(randomMessage())
+            messages.value.append(randomMessage())
         }
         completion(messages)
     }

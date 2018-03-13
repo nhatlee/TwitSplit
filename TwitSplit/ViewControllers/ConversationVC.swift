@@ -8,6 +8,8 @@
 
 import UIKit
 import MessageKit
+import RxSwift
+import RxCocoa
 
 final class ConversationVC: MessagesViewController {
     private let refreshControl = UIRefreshControl()
@@ -15,6 +17,7 @@ final class ConversationVC: MessagesViewController {
     private var isTyping = false
     
     var viewModel: ConversationViewModel?
+    let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +50,8 @@ final class ConversationVC: MessagesViewController {
                             target: self,
                             action: #selector(ConversationVC.handleTyping))
         ]
+        
+        
     }
     
     private func dummyData() {
@@ -55,14 +60,16 @@ final class ConversationVC: MessagesViewController {
             SampleData.shared.getMessages(count: messagesToFetch) { [weak self] messages in
                 DispatchQueue.main.async {
                     guard let strongSelf = self else {return }
-                    strongSelf.viewModel = ConversationViewModel(messages)
-                    strongSelf.messagesCollectionView.scrollToBottom()
+                    strongSelf.viewModel = ConversationViewModel(messagelist: messages)
                     strongSelf.messagesCollectionView.messagesDataSource = strongSelf.viewModel
                     strongSelf.messagesCollectionView.messagesLayoutDelegate = strongSelf.viewModel
                     strongSelf.messagesCollectionView.messagesDisplayDelegate = strongSelf.viewModel
                     strongSelf.messagesCollectionView.messageCellDelegate = strongSelf.viewModel
                     strongSelf.messageInputBar.delegate = strongSelf.viewModel
-                    strongSelf.messagesCollectionView.reloadData()
+                    let _ = strongSelf.viewModel?.messageList.asObservable().subscribe({ updatelist in
+                       strongSelf.messagesCollectionView.reloadData()
+                        strongSelf.messagesCollectionView.scrollToBottom()
+                    })
                 }
             }
         }
@@ -83,7 +90,7 @@ final class ConversationVC: MessagesViewController {
         } else {
             
             let label = UILabel()
-            label.text = "nathan.tannar is typing..."
+            label.text = "someone is typing..."
             label.font = UIFont.boldSystemFont(ofSize: 16)
             messageInputBar.topStackView.addArrangedSubview(label)
             
@@ -99,7 +106,7 @@ final class ConversationVC: MessagesViewController {
     }
     
     @objc func loadMoreMessages() {
-        print("TODO:---loadMoreMessages")
+        print("TODO:---loadMoreMessages------------------")
     }
 
     @objc func handleKeyboardButton() {

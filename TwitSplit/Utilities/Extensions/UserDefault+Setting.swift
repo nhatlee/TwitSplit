@@ -22,6 +22,6 @@ extension UserDefaults {
         if let value = object(forKey: "mockMessages") as? Int {
             return value
         }
-        return 20
+        return 5
     }
 }
